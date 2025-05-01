@@ -9,5 +9,9 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
+#    properties:
+#      hibernate:
+#        show_sql: true        # SQL 출력
+#        format_sql: true      # 예쁘게 출력
   jackson:
     property-naming-strategy: SNAKE_CASE

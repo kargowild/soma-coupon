@@ -1,6 +1,7 @@
 package com.coupon_hw.demo.global;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
+//@EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final MemberRepository memberRepository;

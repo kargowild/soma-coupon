@@ -38,4 +38,8 @@ public class Coupon {
         this.availableCount = availableCount;
         this.expiresAt = expiresAt;
     }
+
+    public void setAvailableCount(int availableCount) {
+        this.availableCount = availableCount;
+    }
 }

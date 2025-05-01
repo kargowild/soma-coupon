@@ -26,8 +26,8 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Version
-    private int version;
+//    @Version
+//    private int version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -44,7 +44,7 @@ public class MemberCoupon {
         this.usable = true;
     }
 
-    public void use() {
-        usable = false;
+    public void setUsable(boolean usable) {
+        this.usable = usable;
     }
 }
