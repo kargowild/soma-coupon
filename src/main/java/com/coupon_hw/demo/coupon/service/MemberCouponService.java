@@ -28,7 +28,9 @@ public class MemberCouponService {
     @Transactional
     public long createMemberCoupon(long memberId, long couponId) {
         Member member = getMember(memberId);
+        log.info("member{} x락 획득 시도", memberId);
         Coupon coupon = getCouponWithXLock(couponId);
+        log.info("member{} x락 획득 성공", memberId);
 
         // 만료기간 확인
         validateExpired(coupon);
@@ -50,6 +52,12 @@ public class MemberCouponService {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         memberCouponRepository.save(memberCoupon);
 
+        // 의도적으로 1초 지연
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+        log.info("member{} 락 반납", memberId);
         return memberCoupon.getId();
     }
 

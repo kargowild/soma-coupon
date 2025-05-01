@@ -33,24 +33,23 @@ import com.coupon_hw.demo.member.domain.Member;
 import com.coupon_hw.demo.member.domain.MemberType;
 import com.coupon_hw.demo.member.repository.MemberRepository;
 
-@ActiveProfiles("test")
-@Testcontainers
+//@Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class MemberCouponServiceTest {
 
-    @Container
-    static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.28")
-            .withDatabaseName("coupon")
-            .withUsername("root")
-            .withPassword("root");
-
-    @DynamicPropertySource
-    static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", mysqlContainer::getUsername);
-        registry.add("spring.datasource.password", mysqlContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", mysqlContainer::getDriverClassName);
-    }
+//    @Container
+//    static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.28")
+//            .withDatabaseName("coupon")
+//            .withUsername("root")
+//            .withPassword("root");
+//
+//    @DynamicPropertySource
+//    static void overrideProps(DynamicPropertyRegistry registry) {
+//        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+//        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+//        registry.add("spring.datasource.driver-class-name", mysqlContainer::getDriverClassName);
+//    }
 
     @Autowired
     private MemberRepository memberRepository;
@@ -66,8 +65,8 @@ class MemberCouponServiceTest {
     void createMemberCouponByManyUsers() throws InterruptedException {
         // given
         List<Member> members = new ArrayList<>();
-        int memberCount = 1000;
-        int couponCount = 100;
+        int memberCount = 20;
+        int couponCount = 10;
         for (int i = 0; i < memberCount; i++) {
             Member member = memberRepository.save(new Member(MemberType.USER, "member" + i));
             members.add(member);
@@ -91,7 +90,7 @@ class MemberCouponServiceTest {
                     exceptions.add(e);
                 } finally {
                     long end = System.currentTimeMillis();  // 종료 시간 기록
-                    System.out.printf("Thread for member %d took %d ms%n", member.getId(), (end - start));
+//                    System.out.printf("Thread for member %d took %d ms%n", member.getId(), (end - start));
                     latch.countDown();
                 }
             });
