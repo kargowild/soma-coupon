@@ -4,8 +4,6 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
-  profiles:
-    active: local
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
@@ -22,6 +20,3 @@ spring:
 #      host: redis-server
 #      port: 6379
 #      password: 1234
-
-  jackson:
-    property-naming-strategy: SNAKE_CASE

@@ -18,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        long memberId = Long.parseLong(request.getHeader("member_id"));
+        long memberId = Long.parseLong(request.getHeader("memberId"));
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         if (member.getMemberType() != MemberType.ADMIN) {

@@ -1,4 +1,4 @@
-package com.coupon_hw.demo.coupon.controller;
+package com.coupon_hw.demo.coupon.controller.dto;
 
 import java.time.LocalDateTime;
 
