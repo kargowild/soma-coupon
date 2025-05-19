@@ -1,5 +1,6 @@
 package com.coupon_hw.demo.coupon.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coupon_hw.demo.coupon.controller.dto.CouponResponse;
 import com.coupon_hw.demo.coupon.controller.dto.MemberCouponCreateResponse;
 import com.coupon_hw.demo.coupon.controller.dto.MemberCouponRequest;
 import com.coupon_hw.demo.coupon.service.MemberCouponService;
@@ -25,6 +27,12 @@ public class MemberCouponController {
     @PostMapping
     public ResponseDto<MemberCouponCreateResponse> createMemberCoupon(@RequestHeader("member_id") long memberId, @RequestBody MemberCouponRequest request) {
         long memberCouponId = memberCouponService.createMemberCoupon(memberId, request.couponId());
+        return new ResponseDto<>(ResponseStatus.CREATED, new MemberCouponCreateResponse(memberCouponId));
+    }
+
+    @PostMapping("/no-x-lock")
+    public ResponseDto<MemberCouponCreateResponse> createMemberCouponWithoutXLock(@RequestHeader("member_id") long memberId, @RequestBody MemberCouponRequest request) {
+        long memberCouponId = memberCouponService.createMemberCouponWithoutXLock(memberId, request.couponId());
         return new ResponseDto<>(ResponseStatus.CREATED, new MemberCouponCreateResponse(memberCouponId));
     }
 

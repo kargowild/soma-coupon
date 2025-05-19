@@ -5,17 +5,17 @@ spring:
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 10
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 #    properties:
 #      hibernate:
-#        show_sql: true        # SQL 출력
-#        format_sql: true      # 예쁘게 출력
+#        show_sql: true
+#        format_sql: true
 
 #  data:
 #    redis:

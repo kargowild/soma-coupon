@@ -24,4 +24,9 @@ public class CouponService {
         couponRepository.save(coupon);
         return coupon.getId();
     }
+
+    public Coupon readCoupon(long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+    }
 }

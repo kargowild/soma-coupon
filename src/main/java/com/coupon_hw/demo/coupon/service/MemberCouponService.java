@@ -2,6 +2,8 @@ package com.coupon_hw.demo.coupon.service;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.EntityManager;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +30,7 @@ public class MemberCouponService {
     @Transactional
     public long createMemberCoupon(long memberId, long couponId) {
         Member member = getMember(memberId);
-        log.info("member{} x락 획득 시도", memberId);
         Coupon coupon = getCouponWithXLock(couponId);
-        log.info("member{} x락 획득 성공", memberId);
 
         // 만료기간 확인
         validateExpired(coupon);
@@ -52,17 +52,44 @@ public class MemberCouponService {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         memberCouponRepository.save(memberCoupon);
 
-        // 의도적으로 1초 지연
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        return memberCoupon.getId();
+    }
+
+    @Transactional
+    public long createMemberCouponWithoutXLock(long memberId, long couponId) {
+        Member member = getMember(memberId);
+        Coupon coupon = getCoupon(couponId);
+
+        // 만료기간 확인
+        validateExpired(coupon);
+
+        // 남은 수량 확인
+        int availableCount = coupon.getAvailableCount();
+        if (availableCount < 1) {
+            throw new IllegalStateException("모두 소진된 쿠폰입니다.");
         }
-        log.info("member{} 락 반납", memberId);
+
+        // 이미 발급 받은 회원인지 확인
+        boolean isExisted = memberCouponRepository.existsByMemberIdAndCouponId(memberId, couponId);
+        if (isExisted) {
+            throw new IllegalStateException("이미 발급 받은 쿠폰입니다.");
+        }
+
+        // 쿠폰 발급 진행
+        coupon.setAvailableCount(availableCount - 1);
+        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        memberCouponRepository.save(memberCoupon);
+
         return memberCoupon.getId();
     }
 
     private Coupon getCouponWithXLock(long couponId) {
         return couponRepository.findByIdForUpdate(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+    }
+
+    private Coupon getCoupon(long couponId) {
+        return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 
