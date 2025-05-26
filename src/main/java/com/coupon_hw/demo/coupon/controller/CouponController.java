@@ -31,7 +31,7 @@ public class CouponController {
         return new ResponseDto<>(ResponseStatus.CREATED, new CouponCreateResponse(couponId));
     }
 
-    @GetMapping
+    @GetMapping("/{couponId}")
     public ResponseDto<CouponResponse> readCoupon(@PathVariable long couponId) {
         Coupon coupon = couponService.readCoupon(couponId);
         return new ResponseDto<>(new CouponResponse(coupon));

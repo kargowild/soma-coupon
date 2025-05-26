@@ -40,7 +40,7 @@ public class MemberCouponController {
         return new ResponseDto<>(ResponseStatus.CREATED, new MemberCouponCreateResponse(memberCouponId));
     }
 
-    @PostMapping("/{member_coupon_id}")
+    @PostMapping("/{memberCouponId}")
     public ResponseDto<Void> useMemberCoupon(@RequestHeader("member_id") long memberId, @PathVariable("memberCouponId") long memberCouponId) {
         memberCouponService.useMemberCoupon(memberId, memberCouponId);
         return new ResponseDto<>();
