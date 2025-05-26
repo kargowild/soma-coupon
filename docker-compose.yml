@@ -7,8 +7,8 @@ services:
     depends_on:
       coupon-db:
         condition: service_healthy
-  #      redis-server:
-  #        condition: service_healthy
+      coupon-redis:
+        condition: service_healthy
 
   coupon-db:
     image: mysql
@@ -16,8 +16,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: coupon
-    volumes:
-      - ./mysql_data:/var/lib/mysql
+#    volumes:
+#      - ./mysql_data:/var/lib/mysql
     ports:
       - 3306:3306
     healthcheck:
@@ -25,14 +25,15 @@ services:
       interval: 5s
       retries: 10
 
-  #  coupon-redis:
-  #    image: redis
-  #    ports:
-  #      - 6379:6379
-  #    healthcheck:
-  #      test: [ "CMD", "redis-cli", "ping" ]
-  #      interval: 5s
-  #      retries: 10
+  coupon-redis:
+    image: redis
+    container_name: coupon-redis
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      retries: 10
 
 #  k6:
 #    image: grafana/k6
@@ -60,18 +61,18 @@ services:
 #    entrypoint: >
 #      /bin/sh -c "k6 run load-test-1000-vus.js > /results/results.log 2>&1"
 
-  k6-1000-nolock:
-    image: grafana/k6
-    container_name: k6-1000-nolock
-    volumes:
-      - ./k6/scripts:/scripts      # load-test.js 위치
-      - ./k6/results:/results      # results.log 저장 위치
-    working_dir: /scripts
-    depends_on:
-      coupon-app:
-        condition: service_started
-    entrypoint: >
-      /bin/sh -c "k6 run load-test-1000-vus-nolock.js > /results/results.log 2>&1"
+#  k6-1000-nolock:
+#    image: grafana/k6
+#    container_name: k6-1000-nolock
+#    volumes:
+#      - ./k6/scripts:/scripts      # load-test.js 위치
+#      - ./k6/results:/results      # results.log 저장 위치
+#    working_dir: /scripts
+#    depends_on:
+#      coupon-app:
+#        condition: service_started
+#    entrypoint: >
+#      /bin/sh -c "k6 run load-test-1000-vus-nolock.js > /results/results.log 2>&1"
 
 #  k6-1000-get:
 #    image: grafana/k6

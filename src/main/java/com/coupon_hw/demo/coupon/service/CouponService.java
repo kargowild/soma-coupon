@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coupon_hw.demo.coupon.domain.Coupon;
 import com.coupon_hw.demo.coupon.domain.CouponType;
+import com.coupon_hw.demo.coupon.repository.CouponRedisRepository;
 import com.coupon_hw.demo.coupon.repository.CouponRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,13 @@ import lombok.RequiredArgsConstructor;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CouponRedisRepository couponRedisRepository;
 
     @Transactional
     public long createCoupon(CouponType couponType, int availableCount, LocalDateTime expiresAt) {
         Coupon coupon = new Coupon(couponType, availableCount, expiresAt);
         couponRepository.save(coupon);
+        couponRedisRepository.save(coupon);
         return coupon.getId();
     }
 

@@ -3,20 +3,20 @@ spring:
     url: jdbc:mysql://coupon-db:3306/coupon
     username: root
     password: 1234
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 #    properties:
 #      hibernate:
 #        show_sql: true        # SQL 출력
 #        format_sql: true      # 예쁘게 출력
 
-#  data:
-#    redis:
-#      host: redis-server
-#      port: 6379
-#      password: 1234
+  data:
+    redis:
+      host: coupon-redis
+      port: 6379
+      password: 1234

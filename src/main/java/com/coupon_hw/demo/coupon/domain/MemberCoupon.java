@@ -7,7 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Version;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import com.coupon_hw.demo.member.domain.Member;
 
@@ -17,6 +18,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_member_coupon", columnNames = {"member_id", "coupon_id"})
+        }
+)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,9 +31,6 @@ public class MemberCoupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @Version
-//    private int version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
